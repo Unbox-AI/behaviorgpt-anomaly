@@ -1,0 +1,10 @@
+.env
+.venv/
+__pycache__/
+*.py[cod]
+.ruff_cache/
+.pytest_cache/
+.DS_Store
+
+# API responses cached by scripts and the app; rebuilt on demand
+data/cache.sqlite

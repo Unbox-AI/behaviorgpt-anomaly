@@ -1,0 +1,34 @@
+[project]
+name = "behaviorgpt-anomaly"
+version = "0.1.0"
+description = "Behavioral anomaly and fraud detection with BehaviorGPT: how likely is this shopper's sequence of actions?"
+readme = "README.md"
+requires-python = ">=3.11"
+dependencies = [
+    # Not on PyPI yet; pinned to the SDK commit this app was built against.
+    "behaviorgpt @ git+https://github.com/Unbox-AI/behaviorgpt.git@10e1c73b36384200f6e74d6b8fdd12cc0dc1a491",
+    "fastapi>=0.115",
+    "numpy>=2.0",
+    "python-dotenv>=1.0",
+    "uvicorn>=0.30",
+]
+
+[dependency-groups]
+dev = ["httpx>=0.28", "pytest>=8.0", "ruff>=0.6"]
+
+[tool.uv]
+package = false
+
+[tool.ruff]
+target-version = "py311"
+line-length = 88
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "B", "UP"]
+
+[tool.ruff.lint.isort]
+known-first-party = ["anomaly"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["."]

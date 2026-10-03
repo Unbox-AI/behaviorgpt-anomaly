@@ -1,0 +1,138 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Anomaly detection · BehaviorGPT · Unbox AI</title>
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Oxygen:wght@300;400;700&family=Oxygen+Mono&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/styles.css">
+  <script type="module" src="/app.js"></script>
+</head>
+<body>
+  <header class="top">
+    <a class="brand" href="https://unboxai.com/behaviorgpt" target="_blank" rel="noopener">
+      <svg class="cube" viewBox="0 0 36 33" aria-hidden="true">
+        <path d="M1 14 12.333 20.5V33L1 26.5Z" /><path d="M23.667 14 12.333 20.5V33l11.334-6.5Z" /><path d="M12.333 7.5 23.667 1 35 7.5 23.667 14Z" />
+      </svg>
+      <span>Unbox</span>
+      <span class="tag">BehaviorGPT</span>
+    </a>
+    <nav class="nav">
+      <span id="live-badge" class="status"></span>
+      <button class="link" id="about-open">How it works</button>
+      <a href="https://github.com/Unbox-AI/behaviorgpt" target="_blank" rel="noopener">GitHub</a>
+      <a href="https://unboxai.com/behaviorgpt" target="_blank" rel="noopener">Get API key</a>
+    </nav>
+  </header>
+
+  <section class="hero">
+    <div class="hero-dots" aria-hidden="true"></div>
+    <div class="hero-copy">
+      <p class="eyebrow accent">Behavioral anomaly detection</p>
+      <h1>How likely is <em>this shopper</em>?</h1>
+      <p class="lead">Every action is scored by BehaviorGPT on <code id="catalog-id">retail_catalog</code>.
+        A session is flagged the moment it crosses the risk barrier, with the items that pushed it there.</p>
+    </div>
+    <div class="scenarios">
+      <div class="scenario-row">
+        <span class="eyebrow">Examples</span>
+        <div id="examples" class="chips"></div>
+      </div>
+      <div class="scenario-row">
+        <span class="eyebrow">Simulate</span>
+        <div id="simulate" class="chips"></div>
+      </div>
+    </div>
+  </section>
+
+  <main class="stage">
+    <section class="pane session">
+      <div class="pane-head">
+        <div>
+          <p class="eyebrow">Session</p>
+          <h2 id="session-label">Session</h2>
+          <p id="session-notes" class="muted"></p>
+        </div>
+        <div class="pane-actions">
+          <button class="ghost small" id="pin">Pin to compare</button>
+          <button class="ghost small" id="clear">Clear</button>
+        </div>
+      </div>
+      <ol id="timeline" class="timeline"></ol>
+      <div class="composer" id="composer">
+        <div class="composer-row quick">
+          <button class="primary" id="add-likely" title="Simulates what a shopper does next: usually views an item sampled from the model for this history, sometimes carts what they just viewed, checks out, or searches for something new">Next action</button>
+          <button class="ghost" id="add-odd" title="A random item from a category this session hasn't touched">Odd click</button>
+          <label class="variety" title="1× samples from the model's own distribution: what a normal shopper does next, so the session stays normal. Higher values pick less obvious items and push down variants of what is already in the session; the detector reads that as less typical behavior.">
+            <span class="eyebrow">Variety</span>
+            <input id="variety" type="range" min="1" max="6" step="0.5" value="1">
+            <span id="variety-value" class="mono">1×</span>
+          </label>
+        </div>
+        <div class="composer-row">
+          <select id="event-type" aria-label="Event type">
+            <option value="view">View</option>
+            <option value="add_to_cart">Add to cart</option>
+            <option value="search">Search</option>
+            <option value="remove_from_cart">Remove from cart</option>
+            <option value="order">Order</option>
+          </select>
+          <div class="search-box">
+            <input id="item-query" type="text" autocomplete="off"
+                   placeholder="Find an item in the store…">
+            <ul id="item-results" class="results" hidden></ul>
+          </div>
+          <button class="ghost" id="add-event">Add</button>
+        </div>
+        <p id="composer-hint" class="hint"></p>
+      </div>
+    </section>
+
+    <section class="pane verdict">
+      <p class="eyebrow"><span class="dot-accent"></span>What BehaviorGPT reads</p>
+      <div id="verdict-head" class="verdict-head"></div>
+      <div id="risk-meter" class="risk-meter"></div>
+      <div id="chart" class="chart"></div>
+      <div id="metrics" class="metrics"></div>
+      <p class="eyebrow section-label">Why</p>
+      <div id="drivers" class="drivers"></div>
+    </section>
+  </main>
+
+  <section class="compare">
+    <div class="compare-head">
+      <p class="eyebrow">Compare</p>
+      <h2>Normal <em>vs</em> abnormal</h2>
+      <p class="muted">Risk over the session for every pinned session. A session is flagged the moment its line crosses the barrier.</p>
+    </div>
+    <div class="compare-body">
+      <div id="compare-chart" class="chart"></div>
+      <table id="compare-table" class="compare-table"></table>
+    </div>
+  </section>
+
+  <footer class="foot">
+    <span>© Unbox AI</span>
+    <span>Simulated shoppers on the public <code>retail_catalog</code>. Recalibrate on your own traffic before relying on the barrier.</span>
+  </footer>
+
+  <dialog id="about">
+    <article>
+      <header class="dialog-head">
+        <div>
+          <p class="eyebrow accent">Method</p>
+          <h2 tabindex="-1" autofocus>How it works</h2>
+        </div>
+        <button class="ghost small" id="about-close">Close</button>
+      </header>
+      <div id="about-body"></div>
+    </article>
+  </dialog>
+
+  <div id="toast" class="toast" hidden></div>
+  <div id="busy" class="busy" hidden><span class="spinner"></span><span id="busy-text">Scoring…</span></div>
+</body>
+</html>
