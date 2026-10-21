@@ -39,12 +39,16 @@ wheels = [
 
 [[package]]
 name = "behaviorgpt"
-version = "0.1.0"
-source = { git = "https://github.com/Unbox-AI/behaviorgpt.git?rev=10e1c73b36384200f6e74d6b8fdd12cc0dc1a491#10e1c73b36384200f6e74d6b8fdd12cc0dc1a491" }
+version = "0.5.0"
+source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "httpx" },
     { name = "pyarrow" },
     { name = "pydantic" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/12/19/34d756b3e8deb17a3b842887ec133b2279333cf6eabcd3bb630aecbf8fd4/behaviorgpt-0.5.0.tar.gz", hash = "sha256:a3c5697f4affa0144b328e161be299346ec12e358b73147dc779138effe956e3", size = 28267, upload-time = "2026-10-21T00:32:40.767Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/ee/ea/31ecb84f91e57f511c08a5a8083f3454fb2628fe372ff9d1b1ba6d2eb2d1/behaviorgpt-0.5.0-py3-none-any.whl", hash = "sha256:57d11134e3bdc430ba4078540e2fac0641770de6a02387b6c76981a521fe66a6", size = 32830, upload-time = "2026-10-21T00:32:39.197Z" },
 ]
 
 [[package]]
@@ -69,7 +73,7 @@ dev = [
 
 [package.metadata]
 requires-dist = [
-    { name = "behaviorgpt", git = "https://github.com/Unbox-AI/behaviorgpt.git?rev=10e1c73b36384200f6e74d6b8fdd12cc0dc1a491" },
+    { name = "behaviorgpt", specifier = ">=0.5" },
     { name = "fastapi", specifier = ">=0.115" },
     { name = "numpy", specifier = ">=2.0" },
     { name = "python-dotenv", specifier = ">=1.0" },

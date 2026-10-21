@@ -21,7 +21,7 @@ from behaviorgpt import UnboxAIClient
 from behaviorgpt._exceptions import UnboxAIError
 
 from anomaly.catalog import FIELDS
-from anomaly.events import Event, key
+from anomaly.events import Event, key, to_sdk
 
 DEFAULT_CATALOG = "retail_catalog"
 RETRYABLE = {429, 500, 502, 503, 504}
@@ -100,7 +100,7 @@ class BehaviorAPI:
         return list(self.pool.map(lambda r: self.rank(**r), requests))
 
     def _call(self, history, limit, offset, filters) -> list[Ranked]:
-        sdk_history = [e.to_sdk() for e in history]
+        sdk_history = to_sdk(history)
         for attempt in range(self.retries + 1):
             try:
                 res = self.client.complete(
